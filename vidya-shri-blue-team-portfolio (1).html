@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidya Shri S — Blue Team Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14;
+    --panel:#101820;
+    --panel-2:#0E151B;
+    --line:#1C2730;
+    --steel:#8FA3AD;
+    --steel-dim:#5C6B73;
+    --bright:#E8EDF1;
+    --green:#3DDC97;
+    --green-dim:#1F5E45;
+    --red:#FF6B5E;
+    --amber:#E8B339;
+    --display:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--bright);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--green-dim);color:var(--bright);}
+
+  a{color:inherit;text-decoration:none;}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* subtle grid texture */
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(143,163,173,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(143,163,173,0.035) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  /* ============ NAV ============ */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,15,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;max-width:1080px;margin:0 auto;
+  }
+  .brand{
+    font-family:var(--mono);font-size:14px;color:var(--green);
+    display:flex;align-items:center;gap:8px;letter-spacing:0.02em;
+  }
+  .brand .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  .navlinks{display:flex;gap:32px;font-family:var(--mono);font-size:12.5px;color:var(--steel);}
+  .navlinks a{transition:color 0.2s;}
+  .navlinks a:hover{color:var(--green);}
+  .navlinks .num{color:var(--steel-dim);margin-right:6px;}
+
+  .nav-social{display:flex;gap:10px;}
+  .nav-social-link{
+    display:flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:12px;color:var(--steel);
+    border:1px solid var(--line);padding:6px 10px;border-radius:4px;
+    transition:color 0.2s, border-color 0.2s;
+  }
+  .nav-social-link svg{flex-shrink:0;}
+  .nav-social-link:hover{color:var(--green);border-color:var(--green-dim);}
+  .nav-social-link span{display:none;}
+  @media(min-width:880px){
+    .nav-social-link span{display:inline;}
+  }
+
+  @media(max-width:680px){
+    .navlinks{display:none;}
+  }
+
+  /* ============ HERO / SOC CONSOLE ============ */
+  .hero{
+    position:relative;z-index:1;
+    padding:72px 0 56px;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:start;
+  }
+  @media(max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;color:var(--green);
+    text-transform:uppercase;letter-spacing:0.12em;
+    display:flex;align-items:center;gap:10px;margin-bottom:20px;
+  }
+  .eyebrow::before{content:'●';font-size:9px;animation:pulse 2s infinite;}
+
+  h1{
+    font-family:var(--display);
+    font-size:clamp(40px,6vw,64px);
+    font-weight:700;
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    margin-bottom:20px;
+  }
+  h1 .accent{color:var(--green);}
+
+  .hero-sub{
+    font-size:16.5px;color:var(--steel);max-width:520px;margin-bottom:28px;
+  }
+
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px;}
+  .btn{
+    font-family:var(--mono);font-size:13px;padding:12px 20px;
+    border:1px solid var(--line);border-radius:4px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:all 0.2s;
+  }
+  .btn-primary{background:var(--green);color:#06120D;border-color:var(--green);font-weight:600;}
+  .btn-primary:hover{background:#5EE8AC;}
+  .btn-ghost{color:var(--bright);}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green);}
+
+  .stat-row{display:flex;gap:32px;flex-wrap:wrap;}
+  .stat{font-family:var(--mono);}
+  .stat .n{font-size:22px;color:var(--bright);font-weight:600;}
+  .stat .l{font-size:11px;color:var(--steel-dim);text-transform:uppercase;letter-spacing:0.08em;}
+
+  /* console panel */
+  .console{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+  .console-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px;border-bottom:1px solid var(--line);
+    background:var(--panel-2);
+  }
+  .console-bar .title{font-family:var(--mono);font-size:11px;color:var(--steel);letter-spacing:0.05em;}
+  .console-dots{display:flex;gap:6px;}
+  .console-dots span{width:8px;height:8px;border-radius:50%;background:var(--line);}
+  .console-body{
+    font-family:var(--mono);font-size:12px;line-height:1.9;
+    padding:16px 14px;height:330px;overflow:hidden;position:relative;
+  }
+  .log-line{display:flex;gap:10px;opacity:0;animation:fadeIn 0.4s forwards;white-space:nowrap;}
+  .log-line .ts{color:var(--steel-dim);flex-shrink:0;}
+  .log-line .sev{flex-shrink:0;font-weight:600;width:50px;}
+  .sev-info{color:var(--steel);}
+  .sev-low{color:var(--green);}
+  .sev-med{color:var(--amber);}
+  .sev-high{color:var(--red);}
+  .log-line .msg{color:var(--bright);overflow:hidden;text-overflow:ellipsis;}
+  @keyframes fadeIn{to{opacity:1;}}
+  .console-footer{
+    border-top:1px solid var(--line);padding:10px 14px;
+    font-family:var(--mono);font-size:11px;color:var(--steel-dim);
+    display:flex;justify-content:space-between;
+  }
+  .console-footer .live{color:var(--green);}
+
+  /* ============ SECTIONS ============ */
+  section{position:relative;z-index:1;padding:72px 0;border-top:1px solid var(--line);}
+
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:40px;}
+  .sec-tag{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:0.08em;}
+  .sec-title{font-family:var(--display);font-size:clamp(26px,3.2vw,34px);font-weight:600;}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:2fr 1fr;gap:48px;}
+  @media(max-width:880px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{color:var(--steel);font-size:15.5px;margin-bottom:16px;}
+  .about-text strong{color:var(--bright);font-weight:600;}
+
+  .id-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px;
+    font-family:var(--mono);font-size:12.5px;
+  }
+  .id-card .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);}
+  .id-card .row:last-child{border-bottom:none;}
+  .id-card .k{color:var(--steel-dim);}
+  .id-card .v{color:var(--bright);text-align:right;}
+
+  /* SKILLS */
+  .skill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  @media(max-width:880px){.skill-grid{grid-template-columns:1fr;}}
+  .skill-cell{background:var(--panel);padding:26px 22px;}
+  .skill-cell .tag{font-family:var(--mono);font-size:11px;color:var(--green-dim);background:rgba(61,220,151,0.08);color:var(--green);display:inline-block;padding:3px 8px;border-radius:3px;margin-bottom:14px;letter-spacing:0.04em;}
+  .skill-cell h3{font-family:var(--display);font-size:18px;margin-bottom:10px;font-weight:600;}
+  .skill-cell p{color:var(--steel);font-size:13.5px;}
+
+  /* TIMELINE - internship & experience */
+  .tl-item{display:grid;grid-template-columns:140px 1fr;gap:24px;padding:28px 0;border-bottom:1px solid var(--line);}
+  .tl-item:last-child{border-bottom:none;}
+  @media(max-width:680px){.tl-item{grid-template-columns:1fr;gap:10px;}}
+  .tl-date{font-family:var(--mono);font-size:12px;color:var(--steel-dim);padding-top:3px;}
+  .tl-org{font-family:var(--display);font-weight:600;font-size:18px;margin-bottom:4px;}
+  .tl-role{font-family:var(--mono);font-size:12px;color:var(--green);margin-bottom:12px;display:block;}
+  .tl-desc{color:var(--steel);font-size:14.5px;}
+  .tl-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .tl-tags span{font-family:var(--mono);font-size:11px;color:var(--steel);border:1px solid var(--line);padding:4px 9px;border-radius:3px;}
+
+  /* PROJECTS */
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:880px){.proj-grid{grid-template-columns:1fr;}}
+  .proj-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:28px;
+    display:flex;flex-direction:column;gap:14px;transition:border-color 0.2s, transform 0.2s;
+  }
+  .proj-card:hover{border-color:var(--green-dim);transform:translateY(-2px);}
+  .proj-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .proj-card h3{font-family:var(--display);font-size:19px;font-weight:600;}
+  .proj-id{font-family:var(--mono);font-size:11px;color:var(--steel-dim);}
+  .proj-card p{color:var(--steel);font-size:14px;}
+  .proj-stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;}
+  .proj-stack span{font-family:var(--mono);font-size:11px;color:var(--green);background:rgba(61,220,151,0.07);padding:4px 9px;border-radius:3px;}
+  .proj-link{font-family:var(--mono);font-size:12px;color:var(--steel);display:flex;align-items:center;gap:6px;margin-top:6px;}
+  .proj-link:hover{color:var(--green);}
+
+  /* CERTS / AWARDS */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media(max-width:880px){.two-col{grid-template-columns:1fr;}}
+  .cert-list{list-style:none;}
+  .cert-list li{
+    display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--steel);
+  }
+  .cert-list li:last-child{border-bottom:none;}
+  .cert-list .chk{font-family:var(--mono);color:var(--green);flex-shrink:0;margin-top:1px;}
+  .cert-list strong{color:var(--bright);}
+
+  .award-item{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);}
+  .award-item:last-child{border-bottom:none;}
+  .award-item .name{font-size:14px;color:var(--bright);}
+  .award-item .prize{font-family:var(--mono);font-size:11px;color:var(--amber);border:1px solid var(--line);padding:3px 8px;border-radius:3px;white-space:nowrap;margin-left:12px;}
+
+  /* CONTACT */
+  .contact-panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:48px;text-align:center;
+  }
+  .contact-panel h2{font-family:var(--display);font-size:clamp(26px,3.5vw,36px);margin-bottom:14px;font-weight:600;}
+  .contact-panel p{color:var(--steel);max-width:480px;margin:0 auto 28px;font-size:15px;}
+  .contact-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+  footer{
+    padding:32px 0;text-align:center;font-family:var(--mono);font-size:11.5px;color:var(--steel-dim);
+    border-top:1px solid var(--line);
+  }
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity 0.6s ease, transform 0.6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header>
+  <nav>
+    <div class="brand"><span class="dot"></span>VIDYA_SHRI // BLUE_TEAM</div>
+    <div class="navlinks">
+      <a href="#about"><span class="num">01</span>About</a>
+      <a href="#skills"><span class="num">02</span>Skills</a>
+      <a href="#experience"><span class="num">03</span>Experience</a>
+      <a href="#projects"><span class="num">04</span>Projects</a>
+      <a href="#credentials"><span class="num">05</span>Credentials</a>
+      <a href="#contact"><span class="num">06</span>Contact</a>
+    </div>
+    <div class="nav-social">
+      <a href="https://www.linkedin.com/in/vidya-shri-s-5a74a731b" target="_blank" rel="noopener" class="nav-social-link" title="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-11h2.88v1.5h.04c.4-.76 1.39-1.56 2.86-1.56 3.06 0 3.62 2.01 3.62 4.63v6.43z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a href="https://github.com/vidyapower7-dev" target="_blank" rel="noopener" class="nav-social-link" title="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.92.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none;">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Blue Team · Defensive Security</div>
+        <h1>Defending networks<br>before the <span class="accent">alert fires.</span></h1>
+        <p class="hero-sub">I'm Vidya Shri S, a Computer Science graduate on the <strong style="color:var(--bright);">blue team</strong> side of cybersecurity — focused on network defense, intrusion detection, and threat modeling, sharpened with applied machine learning to anticipate attacks before they land.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View Projects →</a>
+          <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="n">5</div><div class="l">TryHackMe Paths</div></div>
+          <div class="stat"><div class="n">2</div><div class="l">Platforms Built</div></div>
+          <div class="stat"><div class="n">3<sup style="font-size:11px;">rd</sup>+1<sup style="font-size:11px;">st</sup></div><div class="l">Prizes Won</div></div>
+          <div class="stat"><div class="n">2026</div><div class="l">Graduated</div></div>
+        </div>
+      </div>
+
+      <div class="console">
+        <div class="console-bar">
+          <span class="title">siem_console — live_feed.log</span>
+          <div class="console-dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="console-body" id="logFeed"></div>
+        <div class="console-footer">
+          <span>monitoring: <span class="live">● active</span></span>
+          <span>uptime: 247d</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-head"><span class="sec-tag">01 //</span><span class="sec-title">About</span></div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>I'm a <strong>blue team</strong>-focused Computer Science graduate from <strong>Bishop Heber College, Trichy</strong> — concentrated on the defensive side of cybersecurity: detecting, analyzing, and responding to threats rather than creating them.</p>
+        <p>My academic research centers on applying <strong>AI and machine learning to security analytics</strong>, exploring how models can anticipate and mitigate cyber attacks before they cause damage. I pair that research with hands-on practice across TryHackMe's defensive and offensive security tracks, building a working understanding of both sides of the fight.</p>
+        <p>During my internship at <strong>Bharat Heavy Electricals Limited (BHEL)</strong>, I moved that theory into practice — observing server room operations, studying enterprise data protection measures, and running threat detection tools against real infrastructure, including SAP ERP environments.</p>
+      </div>
+      <div class="id-card">
+        <div class="row"><span class="k">role</span><span class="v">Blue Team / SOC (Fresher)</span></div>
+        <div class="row"><span class="k">education</span><span class="v">B.Sc CS — Graduate</span></div>
+        <div class="row"><span class="k">institute</span><span class="v">Bishop Heber College</span></div>
+        <div class="row"><span class="k">location</span><span class="v">Trichy, Tamil Nadu</span></div>
+        <div class="row"><span class="k">focus</span><span class="v">IDS · Threat Modeling · ML</span></div>
+        <div class="row"><span class="k">linkedin</span><span class="v"><a href="https://www.linkedin.com/in/vidya-shri-s-5a74a731b" target="_blank" rel="noopener" style="color:var(--green);">vidya-shri-s ↗</a></span></div>
+        <div class="row"><span class="k">github</span><span class="v"><a href="https://github.com/vidyapower7-dev" target="_blank" rel="noopener" style="color:var(--green);">vidyapower7-dev ↗</a></span></div>
+        <div class="row"><span class="k">availability</span><span class="v">Internships</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sec-head"><span class="sec-tag">02 //</span><span class="sec-title">Technical Skills</span></div>
+    <div class="skill-grid reveal">
+      <div class="skill-cell">
+        <span class="tag">DEFENSE</span>
+        <h3>Network & Cybersecurity</h3>
+        <p>Solid grasp of network architecture, security principles, and defensive techniques — including intrusion detection, vulnerability assessment, and threat modeling.</p>
+      </div>
+      <div class="skill-cell">
+        <span class="tag">STACK</span>
+        <h3>Development</h3>
+        <p>HTML for frontend work, Python for backend logic, and SQL for database management — the core toolkit behind every security tool I've built.</p>
+      </div>
+      <div class="skill-cell">
+        <span class="tag">ANALYTICS</span>
+        <h3>Machine Learning</h3>
+        <p>Applied ML for security analytics — using models like Naïve Bayes, SVM, and Logistic Regression to classify and flag threats in real time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="sec-head"><span class="sec-tag">03 //</span><span class="sec-title">Experience</span></div>
+    <div class="reveal">
+      <div class="tl-item">
+        <div class="tl-date">INTERNSHIP</div>
+        <div>
+          <div class="tl-org">Bharat Heavy Electricals Limited (BHEL)</div>
+          <span class="tl-role">Cybersecurity & Networking Intern</span>
+          <p class="tl-desc">Gained hands-on exposure to network operations, topologies, and server management. Toured the server room to study how enterprise data is stored, managed, and secured, and ran threat detection tools to identify potential risks. Explored SAP ERP server architecture and its role in integrated enterprise workflows.</p>
+          <div class="tl-tags">
+            <span>Network Topologies</span>
+            <span>Threat Detection Tools</span>
+            <span>SAP ERP</span>
+            <span>Server Management</span>
+            <span>Data Protection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="sec-head"><span class="sec-tag">04 //</span><span class="sec-title">Projects</span></div>
+    <div class="proj-grid reveal">
+      <div class="proj-card">
+        <div class="proj-top">
+          <h3>Spam Email Detection System</h3>
+          <span class="proj-id">PRJ-01</span>
+        </div>
+        <p>End-to-end spam detection system using machine learning and NLP for real-time threat analysis. Built with text preprocessing and TF-IDF feature extraction, trained across Naïve Bayes, SVM, and Logistic Regression models, with a feedback-based retraining pipeline for continuous improvement.</p>
+        <div class="proj-stack"><span>Python</span><span>NLP</span><span>TF-IDF</span><span>SVM</span><span>Naïve Bayes</span></div>
+        <a class="proj-link" href="https://github.com/vidyapower7-dev/spamshield-ai" target="_blank" rel="noopener">↳ github.com/vidyapower7-dev/spamshield-ai</a>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top">
+          <h3>ZENTRA — Threat Detection Platform</h3>
+          <span class="proj-id">PRJ-02</span>
+        </div>
+        <p>Unified, AI-powered cybersecurity platform detecting threats across Wi-Fi, URLs, APKs, and PDFs. Implements multi-layer detection with real-time risk scoring, built to protect users from phishing, malware, and fake public Wi-Fi attacks.</p>
+        <div class="proj-stack"><span>FastAPI</span><span>MongoDB</span><span>TypeScript</span><span>Risk Scoring</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS: certs + awards -->
+  <section id="credentials">
+    <div class="sec-head"><span class="sec-tag">05 //</span><span class="sec-title">Credentials</span></div>
+    <div class="two-col reveal">
+      <div>
+        <h3 style="font-family:var(--display);font-size:16px;margin-bottom:16px;color:var(--steel);font-weight:600;">Certifications</h3>
+        <ul class="cert-list">
+          <li><span class="chk">[✓]</span><span><strong>Introduction to Cyber Security</strong> — Cisco Networking Academy</span></li>
+          <li><span class="chk">[✓]</span><span><strong>Cybersecurity Terminology</strong> — LinkedIn Learning</span></li>
+          <li><span class="chk">[✓]</span><span><strong>Networking</strong> — TryHackMe</span></li>
+          <li><span class="chk">[✓]</span><span><strong>Careers in Cyber</strong> — TryHackMe</span></li>
+          <li><span class="chk">[✓]</span><span><strong>Defensive Security Intro</strong> — TryHackMe</span></li>
+          <li><span class="chk">[✓]</span><span><strong>Offensive Security Intro</strong> — TryHackMe</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:var(--display);font-size:16px;margin-bottom:16px;color:var(--steel);font-weight:600;">Awards & Recognition</h3>
+        <div class="award-item"><span class="name">Paper Presentation — Cybersecurity Using AI</span><span class="prize">3rd Prize</span></div>
+        <div class="award-item"><span class="name">Tech Talk — Cybersecurity</span><span class="prize">1st & 2nd</span></div>
+        <div class="award-item"><span class="name">DEF CON CTF</span><span class="prize">Participant</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-panel reveal">
+      <h2>Let's secure something together.</h2>
+      <p>Currently looking for blue team, SOC, or cybersecurity internship opportunities. Reach out — I'll respond faster than most of the alerts in my log feed above.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:vidyashrissv@gmail.com">vidyashrissv@gmail.com</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/vidya-shri-s-5a74a731b" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/vidyapower7-dev" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-ghost" href="tel:8754973045">8754973045</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  VIDYA_SHRI_S © 2026 — Built for blue team operations · Trichy, Tamil Nadu
+</footer>
+
+<script>
+  // Simulated SIEM log feed
+  const logs = [
+    {sev:'INFO', cls:'sev-info', msg:'Network baseline scan completed — 0 anomalies'},
+    {sev:'LOW',  cls:'sev-low',  msg:'New device joined topology map: SRV-ERP-04'},
+    {sev:'MED',  cls:'sev-med',  msg:'Unusual login pattern detected, flagged for review'},
+    {sev:'INFO', cls:'sev-info', msg:'IDS signature database updated to v4.21'},
+    {sev:'HIGH', cls:'sev-high', msg:'Phishing URL blocked — matched ZENTRA threat model'},
+    {sev:'LOW',  cls:'sev-low',  msg:'TF-IDF classifier flagged inbound spam — quarantined'},
+    {sev:'INFO', cls:'sev-info', msg:'SAP ERP server health check: nominal'},
+    {sev:'MED',  cls:'sev-med',  msg:'Fake public Wi-Fi SSID detected near endpoint'},
+    {sev:'LOW',  cls:'sev-low',  msg:'Vulnerability scan: 2 low-severity findings patched'},
+    {sev:'INFO', cls:'sev-info', msg:'Threat model updated — MITRE ATT&CK mapping refreshed'},
+    {sev:'HIGH', cls:'sev-high', msg:'Malicious APK signature matched — blocked at gateway'},
+    {sev:'LOW',  cls:'sev-low',  msg:'Retraining pipeline triggered on new feedback batch'},
+  ];
+
+  function pad(n){return n.toString().padStart(2,'0');}
+  function timestamp(){
+    const d = new Date();
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+
+  const feed = document.getElementById('logFeed');
+  let i = 0;
+  const visibleLines = [];
+  const maxLines = 13;
+
+  function addLine(){
+    const entry = logs[i % logs.length];
+    i++;
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.innerHTML = `<span class="ts">[${timestamp()}]</span><span class="sev ${entry.cls}">${entry.sev}</span><span class="msg">${entry.msg}</span>`;
+    feed.appendChild(line);
+    visibleLines.push(line);
+    if(visibleLines.length > maxLines){
+      const old = visibleLines.shift();
+      old.remove();
+    }
+    feed.scrollTop = feed.scrollHeight;
+  }
+
+  // seed initial lines
+  for(let j=0;j<8;j++){ addLine(); }
+  setInterval(addLine, 1800);
+
+  // scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  reveals.forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
